@@ -8,13 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ImpersonateRequest extends FormRequest
 {
-    private $userId;
-
-    public function __construct()
-    {
-        $this->userId = $this->route('userId');
-    }
-
+    public ?User $user;
     public function authorize()
     {
         return true;
@@ -30,8 +24,8 @@ class ImpersonateRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $user = User::find($this->userId);
-            if (!$user || Hash::make($this->input('accessKey')) !== $user->access_key) {
+            $this->user = User::findOrFail($this->route('userId'));
+            if (!Hash::check($this->input('accessKey'), $this->user->access_key)) {
                 $validator->errors()->add('accessKey', 'The access key is incorrect.');
             }
         });

@@ -27,9 +27,11 @@ class UserSeeder extends Seeder
             '1oJ$5eF#7s',
             'gK@6mE!3nT'
         ];
+
         $users = User::where('is_admin', false)->get();
         foreach ($users as $key => $user) {
             $user->access_key = Hash::make($accessKeys[$key]);
+            $user->password = Hash::make(123456);
             $user->save();
         }
     }
