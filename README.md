@@ -11,7 +11,7 @@ Setup instruction
 
 Admin login credentials
 email: admin@test.loc
-password: 123456
+password: 123456789
 
 
 All users password 123456
